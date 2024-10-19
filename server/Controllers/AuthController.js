@@ -4,10 +4,10 @@ const jwt = require('jsonwebtoken')
 
 const SignUp = async (req, res) => {
   try {
-    const { name, email, password, age, weight, goal, initialWeight, finalWeight, prefrencesFood, fitnessLevel, preferences, daysPerWeek, planDurationWeek, health_conditions } = req.body
+    const { name, email, password, age, weight, goal, initialWeight, finalWeight, prefrencesFood, fitnessLevel, preferences, daysPerWeek, plan_duration_weeks,sessionDuration, health_conditions } = req.body
     const user = await UserModel.findOne({ email })
     if (user) {
-      return res.status(404).json({ message: 'User Already Exists', sucess: true })
+      return res.status(404).json({ message: 'User Already Exists', sucess: false })
     }
     const target =
     {
@@ -18,7 +18,8 @@ const SignUp = async (req, res) => {
 
     const schedule = {
       daysPerWeek: daysPerWeek,
-      planDurationWeek: planDurationWeek
+      plan_duration_weeks: plan_duration_weeks,
+      sessionDuration:sessionDuration
     }
 
     const hashPassword = await bcrypt.hash(password, 10)

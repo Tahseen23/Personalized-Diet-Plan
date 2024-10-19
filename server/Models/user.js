@@ -1,4 +1,3 @@
-const { preferences } = require('joi')
 const mongoose=require('mongoose')
 const Schema=mongoose.Schema
 
@@ -31,7 +30,7 @@ const userSchema=new Schema({
     }
   ],
   prefrencesFood:{
-    type:String,
+    type:[String],
     required:true
   },
   fitnessLevel:{
@@ -39,17 +38,18 @@ const userSchema=new Schema({
     required:true
   },
   preferences:{
-    type:String,
+    type:[String],
     required:true
   },
   schedule:[
     {
       daysPerWeek:Number,
-      planDurationWeek:Number
+      sessionDuration:Number,
+      plan_duration_weeks:Number
     }
   ],
   health_conditions:{
-    type:String,
+    type:[String],
     required:true
   }
 
