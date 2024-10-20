@@ -23,7 +23,7 @@ const SignUp = async (req, res) => {
     }
 
     const hashPassword = await bcrypt.hash(password, 10)
-    const userModel = new UserModel({ name, email, age, password: hashPassword, weight, target, prefrencesFood, fitnessLevel, preferences, schedule, health_conditions })
+    const userModel = new UserModel({ name, email, age, password: hashPassword, weight, target, prefrencesFood, fitnessLevel, preferences, schedule, health_conditions,plan:[],title:'',content:'',food:[],foodTitle:'',foodContent:''})
 
     await userModel.save()
     return res.status(201).json({ message: 'SignUp Sucess', sucess: true })

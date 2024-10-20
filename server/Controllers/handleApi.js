@@ -1,9 +1,14 @@
 const axios = require('axios');
 const UserModel = require('../Models/user.js')
+const api=process.env.API_KEY
 
 const WorkOutPlan = async (req, res) => {
   const { email } = req.body
   const user = await UserModel.findOne({ email })
+  if (user.plan.length!=0){
+    console.log('user.plan')
+    return res.status(200).json({plan:user.plan,title:user.title,content:user.content})
+  }
   const goal = user.target[0].goal
   const fitnessLevel = user.fitnessLevel
   const preferences = user.preferences
@@ -12,13 +17,15 @@ const WorkOutPlan = async (req, res) => {
   const sessionDuration = user.schedule[0].sessionDuration
   const plan_duration_weeks = user.schedule[0].plan_duration_weeks
 
+  console.log(goal,plan_duration_weeks,preferences,healthConditions)
+
 
   const options = {
     method: 'POST',
     url: 'https://ai-workout-planner-exercise-fitness-nutrition-guide.p.rapidapi.com/generateWorkoutPlan',
     params: { noqueue: '1' },
     headers: {
-      'x-rapidapi-key': '6d4d566a13msh057e31e980dac4cp1ed8a4jsn40a7c8eb14c7',
+      'x-rapidapi-key': api,
       'x-rapidapi-host': 'ai-workout-planner-exercise-fitness-nutrition-guide.p.rapidapi.com',
       'Content-Type': 'application/json'
     },
@@ -37,9 +44,18 @@ const WorkOutPlan = async (req, res) => {
   };
 
   try {
+    console.log("I am here")
     const response = await axios.request(options);
     console.log(response.data);
-    return res.status(200).json({ response: response.data })
+    
+    user.plan=response.data.result.exercises
+    console.log(user.plan)
+
+
+    user.content=response.data.result.seo_content
+    user.title=response.data.result.seo_title
+    await user.save();
+    return res.status(200).json({plan:user.plan,title:user.title,content:user.content})
   } catch (error) {
     console.error(error);
   }
@@ -48,6 +64,10 @@ const WorkOutPlan = async (req, res) => {
 const DietPlan = async (req, res) => {
   const { email } = req.body
   const user = await UserModel.findOne({ email })
+  if (user.food.length!=0){
+    console.log('user.plan')
+    return res.status(200).json({plan:user.food,title:user.foodTitle,content:user.foodContent})
+  }
   const goal = user.target[0].goal
   const currentWeight=user.target[0].from
   const targetWeight=user.target[0].to
@@ -59,7 +79,7 @@ const DietPlan = async (req, res) => {
     url: 'https://ai-workout-planner-exercise-fitness-nutrition-guide.p.rapidapi.com/nutritionAdvice',
     params: { noqueue: '1' },
     headers: {
-      'x-rapidapi-key': '6d4d566a13msh057e31e980dac4cp1ed8a4jsn40a7c8eb14c7',
+      'x-rapidapi-key': api,
       'x-rapidapi-host': 'ai-workout-planner-exercise-fitness-nutrition-guide.p.rapidapi.com',
       'Content-Type': 'application/json'
     },
@@ -72,10 +92,15 @@ const DietPlan = async (req, res) => {
       lang: 'en'
     }
   };
-
   try {
     const response = await axios.request(options);
     console.log(response.data);
+    user.food=response.data.result.meal_suggestions
+    user.foodTitle=response.data.result.seo_title
+    user.foodContent=response.data.result.seo_content
+    await user.save();
+    return res.status(200).json({plan:user.food,title:user.foodTitle,content:user.foodContent})
+    
   } catch (error) {
     console.error(error);
   }
