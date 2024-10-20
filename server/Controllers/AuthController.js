@@ -51,7 +51,7 @@ const Login = async (req, res) => {
       { expiresIn: '24h' }
     )
     const name = user.name
-    res.status(200).json({ message: 'Login sucesss', sucess: true, jwtToken, email, password, name })
+    res.status(200).json({ message: 'Login sucesss', sucess: true, jwtToken, email, name })
   } catch (err) {
     res.status(500).json({
       message: 'Internal Server Error',
