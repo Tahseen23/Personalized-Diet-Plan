@@ -2,10 +2,13 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png"
+import { useDispatch, useSelector } from "react-redux";
+import { setEmail } from "../app/details";
 const LogIn=()=>{
-
+  const dispatch=useDispatch()
   const [showPass, setShowPass] = useState(false)
   const navigate=useNavigate()
+  const email=useSelector(state=>state.detailsData.email)
   const eyeToggle = () => {
     setShowPass(!showPass)
   }
@@ -38,13 +41,14 @@ const LogIn=()=>{
     if (sucess){
       localStorage.setItem('token',token)
       localStorage.setItem('loggedInUser',name)
+      dispatch(setEmail(email))
       navigate('/')
     }else{
       console.log(message)
     }
-
-    
   }
+
+  
   
   return (
     <div>

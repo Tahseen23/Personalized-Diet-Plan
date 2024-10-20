@@ -1,6 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import { moviesSlice } from './moviesSlice.js'
-import moviesReducer from './moviesSlice.js'
+import detailsReducers from './details.js'
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -10,7 +9,7 @@ const persistConfig = {
 };
 
 const reducer=combineReducers({
-  movieData:moviesReducer
+  detailsData:detailsReducers
 })
 
 const persistedReducer=persistReducer(persistConfig,reducer)
