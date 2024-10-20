@@ -15,7 +15,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   scroll-behavior: smooth;
-  @apply bg-neutral-900 text-neutral-300 p-0 m-0
+  @apply bg-custom-hover text-neutral-300 p-0 m-0
 }
 
 code {

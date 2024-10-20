@@ -1,11 +1,13 @@
 import {createSlice} from "@reduxjs/toolkit"
+import { act } from "react"
 
 const initialState={
   email:'',
   plan:[],
   foodplan:[],
   planTitle:'',
-  foodTitle:''
+  foodTitle:'',
+  login:false
 }
 export const details=createSlice({
   name:'details',
@@ -25,10 +27,13 @@ export const details=createSlice({
     },
     setPlanTitle:(state,action)=>{
       state.planTitle=action.payload
+    },
+    setLogin:(state,action)=>{
+      state.login=action.payload
     }
   }
 })
 
-export const {setEmail,setPlan,setfoodPlan,setFoodTitle,setPlanTitle}=details.actions
+export const {setEmail,setPlan,setfoodPlan,setFoodTitle,setPlanTitle,setLogin}=details.actions
 
 export default details.reducer

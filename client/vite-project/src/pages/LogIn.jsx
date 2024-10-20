@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png"
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail } from "../app/details";
+import { setEmail,setLogin,setPlan,setPlanTitle,setfoodPlan,setFoodTitle } from "../app/details";
 const LogIn=()=>{
   const dispatch=useDispatch()
   const [showPass, setShowPass] = useState(false)
@@ -36,30 +36,81 @@ const LogIn=()=>{
       body:JSON.stringify(loginInfo)
     })
     const result=await response.json()
-    const {sucess,token,email,name,message}=result
-
+    const {sucess,jwtToken,email,name,message}=result
     if (sucess){
-      localStorage.setItem('token',token)
+      localStorage.setItem('token',jwtToken)
       localStorage.setItem('loggedInUser',name)
       dispatch(setEmail(email))
+      dispatch(setLogin(sucess))
+      getPlan(email)
+      getFoodPLan(email)
       navigate('/')
     }else{
       console.log(message)
     }
   }
 
-  
+  async function getPlan(email){
+    try{
+      const token = localStorage.getItem('token');
+      const url='http://localhost:8080/plan/plan'
+      const response=await fetch(url,{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'authorization': `Bearer ${token}`
+        },
+        body:JSON.stringify({email})
+      })
+      if (!response.ok){
+        console.log(response)
+      }
+      const result=await response.json()
+      const {plan,title,content}=result
+      dispatch(setPlan(plan))
+      dispatch(setPlanTitle(title))
+      // console.log(plan,content,title)
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  async function getFoodPLan(email){
+    try{
+      const token = localStorage.getItem('token');
+      const url='http://localhost:8080/plan/food'
+      const response=await fetch(url,{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'authorization': `Bearer ${token}`
+        },
+        body:JSON.stringify({email})
+      })
+      if (!response.ok){
+        console.log(response)
+      }
+      const result=await response.json()
+      const {plan,title}=result
+      dispatch(setfoodPlan(plan))
+      dispatch(setFoodTitle(title))
+      // console.log(plan,content,title)
+    }catch(err){
+      console.log(err)
+    }
+  }
+
   
   return (
     <div>
-      <div className="p-2">
+      <div className="p-2 ">
         <Link to='/'>
           <img src={logo} alt="logo" width={120} />
         </Link>
 
         <div className="flex flex-col gap-3 items-center">
           <div className='capitalize text-lg font-extrabold my-3 align-middle text-center mt-20'>
-            <h1>LogIn</h1>
+            <h1 className="text-white">LogIn</h1>
           </div>
 
           <form onSubmit={handleLogin}>
@@ -85,8 +136,8 @@ const LogIn=()=>{
 
 
             <div className="flex flex-col items-center">
-              <button className="bg-red-700 rounded p-2 hover:text-neutral-500" type="submit">Login</button>
-              <p className="mt-2">Don't have an account ?
+              <button className="bg-red-700 rounded p-2 hover:text-neutral-500 text-white" type="submit">Login</button>
+              <p className="mt-2 text-white">Don't have an account ?
                 <Link to="/signup" className="hover:text-blue-700">signUp</Link>
               </p>
             </div>

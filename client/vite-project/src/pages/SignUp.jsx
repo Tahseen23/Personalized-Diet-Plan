@@ -79,7 +79,7 @@ const SignUp = () => {
 
         <div className="flex flex-col gap-3 items-center">
           <div className='capitalize text-lg font-extrabold my-3 align-middle text-center mt-20'>
-            <h1>SignIn</h1>
+            <h1 className="text-white">SignIn</h1>
           </div>
 
           <form onSubmit={handleSignup}>
@@ -158,7 +158,7 @@ const SignUp = () => {
             <div className="flex flex-col items-center">
               <button className="bg-red-700 rounded p-2 hover:text-neutral-500" type="submit">SignIn</button>
               <p className="mt-2">Already! have an account ?
-                <Link to="/login" className="hover:text-blue-700">login</Link>
+                <Link to="/login" className="hover:text-blue-700 text-white">login</Link>
               </p>
             </div>
 

@@ -11,10 +11,7 @@ function App() {
   return (
     <main>
       {(location.pathname!=='/login' && location.pathname!=='/signup') && <Header/>}
-      <div className='min-h-[90vh]'>
         <Outlet></Outlet>
-      </div>
-      <Footer></Footer>
     </main>
  
   )

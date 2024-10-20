@@ -5,7 +5,7 @@ const api=process.env.API_KEY
 const WorkOutPlan = async (req, res) => {
   const { email } = req.body
   const user = await UserModel.findOne({ email })
-  if (user.plan.length!=0){
+  if (user.plan && user.plan.length!=0){
     console.log('user.plan')
     return res.status(200).json({plan:user.plan,title:user.title,content:user.content})
   }
@@ -66,7 +66,7 @@ const DietPlan = async (req, res) => {
   const user = await UserModel.findOne({ email })
   if (user.food.length!=0){
     console.log('user.plan')
-    return res.status(200).json({plan:user.food,title:user.foodTitle,content:user.foodContent})
+    return res.status(200).json({plan:user.food,title:user.foodTitle,content:user.foodContent,sucess:true})
   }
   const goal = user.target[0].goal
   const currentWeight=user.target[0].from
@@ -99,7 +99,7 @@ const DietPlan = async (req, res) => {
     user.foodTitle=response.data.result.seo_title
     user.foodContent=response.data.result.seo_content
     await user.save();
-    return res.status(200).json({plan:user.food,title:user.foodTitle,content:user.foodContent})
+    return res.status(200).json({plan:user.food,title:user.foodTitle,content:user.foodContent,sucess:true})
     
   } catch (error) {
     console.error(error);
