@@ -5,7 +5,7 @@ const api=process.env.API_KEY
 const WorkOutPlan = async (req, res) => {
   const { email } = req.body
   const user = await UserModel.findOne({ email })
-  if (user.plan && user.plan.length!=0){
+  if (user.plan.length!=0){
     console.log('user.plan')
     return res.status(200).json({plan:user.plan,title:user.title,content:user.content})
   }
@@ -17,7 +17,6 @@ const WorkOutPlan = async (req, res) => {
   const sessionDuration = user.schedule[0].sessionDuration
   const plan_duration_weeks = user.schedule[0].plan_duration_weeks
 
-  console.log(goal,plan_duration_weeks,preferences,healthConditions)
 
 
   const options = {
@@ -55,6 +54,7 @@ const WorkOutPlan = async (req, res) => {
     user.content=response.data.result.seo_content
     user.title=response.data.result.seo_title
     await user.save();
+    console.log(user)
     return res.status(200).json({plan:user.plan,title:user.title,content:user.content})
   } catch (error) {
     console.error(error);
@@ -94,7 +94,7 @@ const DietPlan = async (req, res) => {
   };
   try {
     const response = await axios.request(options);
-    console.log(response.data);
+    // console.log(response.data);
     user.food=response.data.result.meal_suggestions
     user.foodTitle=response.data.result.seo_title
     user.foodContent=response.data.result.seo_content

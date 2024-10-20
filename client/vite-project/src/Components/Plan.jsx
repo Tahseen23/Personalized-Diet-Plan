@@ -3,7 +3,6 @@ import {  useSelector } from "react-redux";
 const Plan=()=>{
   const plan=useSelector(state=>state.detailsData.plan)
   const title=useSelector(state=>state.detailsData.planTitle)
-  console.log(title)
 
 
   return (

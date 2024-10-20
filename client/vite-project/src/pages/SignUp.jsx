@@ -38,6 +38,7 @@ const SignUp = () => {
     } else {
       copySignUp[name] = value;
     }
+    copySignUp['initialWeight']=signupInfo.weight
 
     setSignupInfo(copySignUp);
   };

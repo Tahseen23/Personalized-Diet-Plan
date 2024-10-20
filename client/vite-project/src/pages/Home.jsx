@@ -2,6 +2,7 @@ import { setEmail, setLogin } from "../app/details";
 import { useSelector } from "react-redux";
 import logo from '../assets/logo.png'
 import Plan from '../Components/Plan.jsx'
+import Food from "../Components/Food.jsx";
 const Home = () => {
   const login = useSelector(state => state.detailsData.login)
 
@@ -19,9 +20,15 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="mt-16">
-        <Plan></Plan>
+      {login?
+      <div>
+          <Plan></Plan>
+          <Food></Food>
       </div>
+      :
+      <div></div>}
+      
+      
     </div>
   )
 }
